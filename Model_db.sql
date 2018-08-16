@@ -11,7 +11,7 @@
   drop table t_sale;
   drop table t_state;*/
   
-  --
+
   CREATE TABLE t_supplier 
   (
   id_supplier  number not null,
@@ -21,7 +21,7 @@
   constraint t_supplier_unique UNIQUE (moniker)
   );
   
-  --состояния 
+
   CREATE TABLE t_state
   (
   id_state number not null,
@@ -29,7 +29,7 @@
   constraint pk_id_state primary key (id_state)
   );
   
-  --поставка
+
   CREATE TABLE t_supply
   (
   id_supply   number not null,
@@ -44,9 +44,8 @@
   constraint FK_id_supplier foreign key (id_supplier) references  t_supplier(id_supplier),
   constraint FK_id_state foreign key (id_state) references t_state(id_state)
   );     
-  
-     
-  --узел каталога
+       
+
   CREATE TABLE t_ctl_node
   (
   id_ctl_node  number not null,
@@ -58,7 +57,7 @@
   constraint FK_id_parent foreign key (id_parent) references t_ctl_node(id_ctl_node)   
   );
       
-  --модель 
+
   CREATE TABLE t_model
   (
   id_model   number not null,
@@ -72,8 +71,8 @@
   constraint PK_id_model primary key (id_model),
   constraint FK_id_ctl_node foreign key(id_ctl_node)  references t_ctl_node (id_ctl_node)
   );
-     
-  -- цена модели
+    
+
   CREATE TABLE t_prace_model
   (
   id_prace_model number not null,
@@ -85,7 +84,7 @@
   );
   create index IX_id_prace_model on t_prace_model(id_prace_model);
     
-  --товар
+
   CREATE TABLE t_ware
   (
   id_ware number not null,
@@ -99,7 +98,7 @@
   constraint FK_id_model_ware foreign key (id_model) references t_model(id_model)
   );
     
-  --цена товара
+
   CREATE TABLE t_price_ware
   (
   id_price_ware number not null,
@@ -112,14 +111,15 @@
   create index IX_id_price_ware on t_price_ware(id_price_ware);
 
 
-  --строка поставки
+
   CREATE TABLE t_supply_str
   (
   id_supply_str   number not null,
   id_supply number not null,
-  numa number(6),
+  num number(6),
   id_ware number not null,
   qty number(6),  
+  price number (8,2),
   summa number(14,2),
   nds number(14,2),
   constraint PK_id_supply_str primary key (id_supply_str),
@@ -127,7 +127,7 @@
   constraint FK_id_ware_str foreign key (id_ware) references t_ware(id_ware)
   );
   
-  -- подразделение 
+ 
   create table t_dept
   (
   id_dept number  not null,
@@ -137,7 +137,7 @@
   constraint FK_id_parent_dept foreign key (id_parent) references t_dept (id_dept)
   );
   
-  --клиент 
+  
   create table t_client
   (
   id_client number  not null,
@@ -151,7 +151,7 @@
   constraint t_client_unique UNIQUE (moniker)
   );
   
-  --продажа 
+ 
   create table t_sale
   (
   id_sale number  not null,
@@ -167,7 +167,7 @@
   constraint FK_id_state_sale foreign key (id_state) references t_state(id_state)
   );
   
-  -- строка продажи 
+ 
   create table t_sale_str
   (
   id_sale_str number  not null,
