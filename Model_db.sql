@@ -2,7 +2,7 @@
   drop table t_supply;
   drop table t_supply_str;
   drop table t_model;
-  drop table t_prace_model;
+  drop table t_price_model;
   drop table t_ctl_node;
   drop table t_supplier; 
   drop table t_price_ware;
@@ -73,16 +73,16 @@
   );
     
 
-  CREATE TABLE t_prace_model
+  CREATE TABLE t_price_model
   (
-  id_prace_model number not null,
+  id_price_model number not null,
   id_model   number not null,
   dt_beg date,
   dt_end date,
   price  number(8,2),
   constraint FK_id_model foreign key (id_model)references t_model(id_model)  
   );
-  create index IX_id_prace_model on t_prace_model(id_prace_model);
+  create index IX_id_price_model on t_price_model(id_price_model);
     
 
   CREATE TABLE t_ware
@@ -184,6 +184,16 @@
   constraint FK_id_sale foreign key (id_sale) references t_sale(id_sale),
   constraint FK_id_ware_sale foreign key (id_ware) references t_ware(id_ware)  
   );
+  
+  create table t_rest
+  (
+  id_t_rest number is not null
+  id_ware number is not null,
+  qty number(6)    
+  );
+  
+
+  
   
   
 
