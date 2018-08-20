@@ -1,14 +1,15 @@
-/*  drop table t_ware;  
-  drop table t_supply;
-  drop table t_supply_str;
-  drop table t_model;
-  drop table t_price_model;
-  drop table t_ctl_node;
-  drop table t_supplier; 
+/*  drop table t_supply_str;
+  drop table t_sale_str;
   drop table t_price_ware;
-  drop table  t_dept;
+  drop table t_price_model;  
+  drop table t_ware;  
+  drop table t_supply;  
+  drop table t_supplier; 
+  drop table t_model;
+  drop table t_sale; 
   drop table t_client;
-  drop table t_sale;
+  drop table t_ctl_node;
+  drop table t_dept;
   drop table t_state;*/
   
 
@@ -187,9 +188,10 @@
   
   create table t_rest
   (
-  id_t_rest number is not null
-  id_ware number is not null,
-  qty number(6)    
+  id_t_rest number  not null,
+  id_ware number  not null,
+  qty number(6),
+  constraint PK_id_t_rest primary key (id_t_rest)    
   );
   
 
