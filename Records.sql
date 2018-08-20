@@ -22,13 +22,13 @@ insert into t_price_model (id_price_model,id_model,dt_beg,dt_end,price) values (
 insert into t_price_model (id_price_model,id_model,dt_beg,dt_end,price) values (2,2,DATE'2016-05-14',DATE'2019-05-14',888);
 insert into t_price_model (id_price_model,id_model,dt_beg,dt_end,price) values (3,3,DATE'2015-03-14',DATE'2019-05-14',1212);
 
-insert into t_ware (id_ware,moniker,name,id_model,sz_orig,sz_rus) values (1,'Bath Armaruta25','Armaruta25',2,'dfsd','fasf');
-insert into t_ware (id_ware,moniker,name,id_model,sz_orig,sz_rus) values (2,'Bath Armaruta26','Armaruta26',2,'sfsd','sdfas');
-insert into t_ware (id_ware,moniker,name,id_model,sz_orig,sz_rus) values (3,'Bath Steel','Steel1',3,'gfsdfg','df');
+insert into t_ware (id_ware,moniker,name,id_model,sz_orig,sz_rus) values (1,'Armaruta25','Armaruta25',2,'dfsd','fasf');
+insert into t_ware (id_ware,moniker,name,id_model,sz_orig,sz_rus) values (2,'Armaruta26','Armaruta26',2,'sfsd','sdfas');
+insert into t_ware (id_ware,moniker,name,id_model,sz_orig,sz_rus) values (3,'Steel','Steel1',3,'gfsdfg','df');
 
-insert into t_supply_str (id_supply_str, id_supply, numa, id_ware, qty, price) values  (1, 1, 1, 1, 2, 20);
-insert into t_supply_str (id_supply_str, id_supply, numa, id_ware, qty, price) values  (2, 1, 2, 2, 4, 5);
-insert into t_supply_str (id_supply_str, id_supply, numa, id_ware, qty, price) values  (3, 1, 3, 3, 10, 6);
+insert into t_supply_str (id_supply_str, id_supply, num, id_ware, qty, price) values  (1, 1, 1, 1, 2, 20);
+insert into t_supply_str (id_supply_str, id_supply, num, id_ware, qty, price) values  (2, 1, 2, 2, 4, 5);
+insert into t_supply_str (id_supply_str, id_supply, num, id_ware, qty, price) values  (3, 1, 3, 3, 10, 6);
 
 insert into t_dept (id_dept,name,id_parent) values (1,'Global',Null);
 insert into t_dept (id_dept,name,id_parent) values (2,'Vip',1);
