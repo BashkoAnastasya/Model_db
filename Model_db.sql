@@ -206,6 +206,17 @@
   CONSTRAINT fk_id_ware_rest FOREIGN KEY (id_ware) REFERENCES t_ware(id_ware)    
   );
   
+  CREATE TABLE t_rest_hist
+  (
+  id_ware NUMBER NOT NULL,
+  qty NUMBER(6),
+  dt_beg DATE,
+  dt_end DATE,
+  CONSTRAINT fk_id_ware_rest_hist FOREIGN KEY (id_ware) REFERENCES t_ware(id_ware)    
+  );
+  
+  
+  
 
   
   
