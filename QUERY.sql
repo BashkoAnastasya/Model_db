@@ -6,7 +6,11 @@ SELECT tw.id_ware, tw.name, tw.price, tm.name, tpm.id_price_model
    AND tpm.price <> tw.price;
 
 --QUERY3
+<<<<<<< HEAD
 SELECT LPAD(' ', 3 * t.id_parent) || t.name || ' (' || t.kol || ')'
+=======
+SELECT IPAD(' ', 3 * t.id_parent) || t.name || ' (' || t.kol || ')'
+>>>>>>> cef27d70ef11f52f47fbbc74c39558a817efe453
   FROM (SELECT t.*, t2.kol, t.rowid
           FROM t_ctl_node t,
                (SELECT tcn.id_parent, COUNT(tcn.id_parent) kol
@@ -18,19 +22,32 @@ CONNECT BY PRIOR id_ctl_node = id_parent
  ORDER SIBLINGS BY name;
 
 --QUERY4
+<<<<<<< HEAD
 SELECT LPAD(' ', 3 * LEVEL) || t.name AS Tree
+=======
+SELECT IPAD(' ', 3 * LEVEL) || t.name AS Tree
+>>>>>>> cef27d70ef11f52f47fbbc74c39558a817efe453
   FROM t_dept t
  START WITH t.id_parent IS NULL
 CONNECT BY PRIOR t.id_dept = t.id_parent
  ORDER SIBLINGS BY t.name;
 
 -- QUERY7 
+<<<<<<< HEAD
 SELECT tc.moniker "Name client",
+=======
+SELECT 
+       tc.moniker "Name client",
+>>>>>>> cef27d70ef11f52f47fbbc74c39558a817efe453
        COUNT(ts.id_sale) "Count_sale",
        SUM(ts.summa) "Summa",
        SUM(ts.summa) / COUNT(ts.id_sale) "Aug summma",
        MAX(ts.discount) "Max discount",
+<<<<<<< HEAD
        MIN(ts.discount) "Min discount"
+=======
+       MIN(ts.discount)  "Min discount"
+>>>>>>> cef27d70ef11f52f47fbbc74c39558a817efe453
   FROM t_client tc, t_sale ts
  WHERE tc.id_client = ts.id_sale
    AND ts.discount > 25
@@ -47,6 +64,7 @@ SELECT tm.label "Label",
  WHERE tm.id_model = tw.id_model
    AND tw.id_ware = tss.id_sale_str
  GROUP BY tm.label;
+<<<<<<< HEAD
 
 --QUERY-02 
 SELECT tss.*
@@ -84,3 +102,9 @@ SELECT tm.moniker,
    AND tw.id_model = tm.id_model HAVING
  AVG(tss.discount + ts.discount) < SUM(tss.discount + ts.discount)
  GROUP BY tm.moniker;
+=======
+ 
+ 
+ 
+ 
+>>>>>>> cef27d70ef11f52f47fbbc74c39558a817efe453
