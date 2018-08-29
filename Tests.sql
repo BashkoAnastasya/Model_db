@@ -1,10 +1,9 @@
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY test IS
--- i?ioao?a aey caiieiaiey oanoiauie aaiiuie 
  PROCEDURE add_test_data AS
  BEGIN
    INSERT INTO t_supplier VALUES (9, 'IP Frilov26', 'Frilov26 I I');   
  END;
- 
+  
  PROCEDURE delete_test_data AS
  BEGIN
    DELETE FROM t_sale_str t WHERE t.id_sale_str in (95,96,99); 
@@ -15,7 +14,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY test IS
    DELETE FROM t_supplier t  WHERE t.id_supplier IN (8,9); 
    DELETE FROM t_client t WHERE t.id_client in (46);  
  END;
-
+ 
 -- TASK_1.1
   FUNCTION f_test_supply_str_summa_nds(p_id_supply t_supply.id_supply%TYPE ,
                                    p_code t_supply.code%TYPE,
@@ -56,7 +55,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY test IS
     RETURN v_result;
   END; 
   
-   -- TASK_1.2
+  -- TASK_1.2
   FUNCTION f_test_supply_summa_nds(p_id_supply t_supply.id_supply%TYPE) RETURN INTEGER IS
     v_result INTEGER;
     v_summa  t_supply.summa%TYPE;
@@ -272,74 +271,89 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY test IS
     END IF;  
     RETURN  v_result;
   END;
-    
-    FUNCTION f_test_t_rest(p_id_supply t_supply.id_supply%TYPE,p_state_id t_state.id_state%TYPE)
-      RETURN INTEGER IS
-      v_result INTEGER;
-      TYPE Rest_T IS TABLE OF VARCHAR2(5000);
-      TV Rest_T;
-      TR Rest_T;
-    BEGIN
-      v_result := 0;
-      SELECT *
-        BULK COLLECT
-        INTO TV
-        FROM (SELECT t.id_ware || ' ' || (t.qty + SIGN(p_state_id-1.5)*ts.qty)
-                FROM t_rest t, t_supply_str ts
-               WHERE ts.id_supply = p_id_supply
-                 AND t.id_ware = ts.id_ware);
-      UPDATE t_supply t SET t.id_state = p_state_id WHERE t.id_supply = p_id_supply;
-      SELECT *
-        BULK COLLECT
-        INTO TR
-        FROM (SELECT t.id_ware || ' ' || t.qty
-                FROM t_rest t
-               WHERE t.id_ware IN
-                     (SELECT t.id_ware
-                        FROM t_supply_str t
-                       WHERE t.id_supply = p_id_supply));
-      IF TV <> TR  OR TV IS EMPTY OR  TR IS EMPTY THEN
-        v_result := 1;
-      END IF;
-      UPDATE t_supply t SET t.id_state = 1 WHERE t.id_supply = p_id_supply;
-      RETURN v_result;
-    END;
-  
-    FUNCTION f_test_t_rest_sale (p_id_sale t_sale.id_sale%TYPE,p_state_id t_sale.id_state%TYPE)
-      RETURN INTEGER IS
-      v_result INTEGER;
-      TYPE Rest_T IS TABLE OF VARCHAR2(5000);
-      TV Rest_T;
-      TR Rest_T;    
-    BEGIN
-      v_result:=0; 
-      SELECT *
-        BULK COLLECT
-        INTO TV
-        FROM (SELECT t.id_ware || ' ' || (t.qty - SIGN(p_state_id-1.5)*ts.qty)
-                FROM t_rest t, t_sale_str ts
-               WHERE ts.id_sale = p_id_sale
-                 AND t.id_ware = ts.id_ware);    
-      UPDATE t_sale t SET t.id_state = p_state_id WHERE t.id_sale = p_id_sale;    
-      SELECT *
-        BULK COLLECT
-        INTO TR
-        FROM (SELECT t.id_ware || ' ' || t.qty
-                FROM t_rest t
-               WHERE t.id_ware IN
-                     (SELECT t2.id_ware
-                        FROM t_sale_str t2
-                       WHERE t2.id_sale = p_id_sale));
-      IF TV <> TR  OR TV IS EMPTY OR  TR IS EMPTY THEN
-        v_result := 1;
-      END IF;   
-      UPDATE t_sale t SET t.id_state = 1 WHERE t.id_sale = p_id_sale;    
-      RETURN v_result;      
-    END;    
+   
+   --TASK_6  
+   FUNCTION f_test_t_rest(p_id_supply t_supply.id_supply%TYPE,
+                          p_state_id  t_state.id_state%TYPE) RETURN INTEGER IS
+     v_result INTEGER;
+     TYPE Rest_T IS TABLE OF VARCHAR2(5000);
+     TV Rest_T;
+     TR Rest_T;
+   BEGIN
+     v_result := 0;
+     SELECT *
+       BULK COLLECT
+       INTO TV
+       FROM (SELECT ts.id_ware || ' ' ||
+                    (NVL(t.qty,0) + SIGN(p_state_id - 1.5) * ts.qty)
+               FROM t_supply_str ts
+               LEFT OUTER JOIN t_rest t
+                 ON t.id_ware = ts.id_ware
+              WHERE ts.id_supply = p_id_supply);
+     UPDATE t_supply t
+        SET t.id_state = p_state_id
+      WHERE t.id_supply = p_id_supply;
+     SELECT *
+       BULK COLLECT
+       INTO TR
+       FROM (SELECT t.id_ware || ' ' || t.qty
+               FROM t_rest t
+              WHERE t.id_ware IN
+                    (SELECT t.id_ware
+                       FROM t_supply_str t
+                      WHERE t.id_supply = p_id_supply));
+     IF TV <> TR OR TV IS EMPTY OR TR IS EMPTY THEN
+       v_result := 1;
+     END IF;
+     UPDATE t_supply t SET t.id_state = 1 WHERE t.id_supply = p_id_supply;
+     RETURN v_result;
+   END;
+   
+   --TASK_6.1 
+   FUNCTION f_test_t_rest_sale(p_id_sale  t_sale.id_sale%TYPE,
+                               p_state_id t_sale.id_state%TYPE)
+     RETURN INTEGER IS
+     v_result INTEGER;
+     TYPE Rest_T IS TABLE OF VARCHAR2(5000);
+     TV Rest_T;
+     TR Rest_T;
+   BEGIN
+     v_result := 0;
+     SELECT *
+       BULK COLLECT
+       INTO TV
+       FROM (SELECT t.id_ware || ' ' ||
+                    (t.qty - SIGN(p_state_id - 1.5) * ts.qty)
+               FROM t_rest t, t_sale_str ts
+              WHERE ts.id_sale = p_id_sale
+                AND t.id_ware = ts.id_ware);
+     UPDATE t_sale t
+        SET t.id_state = p_state_id
+      WHERE t.id_sale = p_id_sale;
+     SELECT *
+       BULK COLLECT
+       INTO TR
+       FROM (SELECT t.id_ware || ' ' || t.qty
+               FROM t_rest t
+              WHERE t.id_ware IN
+                    (SELECT t2.id_ware
+                       FROM t_sale_str t2
+                      WHERE t2.id_sale = p_id_sale));
+     IF TV <> TR OR TV IS EMPTY OR TR IS EMPTY THEN
+       v_result := 1;
+     END IF;
+     UPDATE t_sale t SET t.id_state = 1 WHERE t.id_sale = p_id_sale;
+     RETURN v_result;
+   EXCEPTION
+     WHEN OTHERS THEN
+       IF SUBSTR(dbms_utility.format_error_stack, 1, 9) <> 'ORA-20001' THEN
+         v_result := 1;
+       END IF;
+       RETURN v_result;
+   END;
   
   PROCEDURE testrun AS
   BEGIN 
-     delete_test_data;
      add_test_data; 
      dbms_output.put_line('TASK_1.1 ' || f_test_supply_str_summa_nds(101, 'Test-1', DATE '2018-09-01',1,101, 1, 1, 2, 20)); 
      dbms_output.put_line('TASK_1.2 ' || f_test_supply_summa_nds(101));     
@@ -352,6 +366,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY test IS
      dbms_output.put_line('TASK_5. '  || f_test_add_price(95,96,16));
      dbms_output.put_line('TASK_6. '  || f_test_t_rest(101,2)); 
      dbms_output.put_line('TASK_6.1 ' || f_test_t_rest_sale(99,2));
-     COMMIT;     
+     delete_test_data;
+     COMMIT; 
   END;    
 END test;

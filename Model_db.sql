@@ -1,7 +1,9 @@
-/*  DROP TABLE t_supply_str;
+/*DROP TABLE t_supply_str;
   DROP TABLE t_sale_str;
   DROP TABLE t_price_ware;
-  DROP TABLE t_price_model;  
+  DROP TABLE t_price_model;
+  DROP TABLE t_rest_hist;
+  DROP TABLE t_sale_rep;  
   DROP TABLE t_rest;
   DROP TABLE t_ware;  
   DROP TABLE t_supply;  
@@ -11,20 +13,25 @@
   DROP TABLE t_client;
   DROP TABLE t_ctl_node;
   DROP TABLE t_dept;
-  DROP TABLE t_state;
+  DROP TABLE t_state;  
+  DROP FUNCTION state_document;
+  DROP FUNCTION state_supply;
   DROP PROCEDURE add_t_price;
   DROP PROCEDURE change_rest_table;
   DROP PROCEDURE test_supply_summa;
   DROP TRIGGER change_t_price_ware;
-  DROP TRIGGER change_t_rest_sale;
-  DROP TRIGGER change_t_rest_supply;
+  DROP TRIGGER change_t_rest_sale_after;
+  DROP TRIGGER change_t_rest_sale_before;
+  DROP TRIGGER change_t_rest_supply_after;
+  DROP TRIGGER change_t_rest_supply_before;
   DROP TRIGGER t_summa_sale_after;
   DROP TRIGGER t_summa_sale_before;
   DROP TRIGGER t_summa_sale_str_after;
   DROP TRIGGER t_summa_sale_str_before;
-  DROP TRIGGER t_summa_t_supply;
-  DROP TRIGGER t_summa_t_supply_str;
-  DROP PACKAGE pkg_around_mutation;*/
+  DROP TRIGGER t_summa_t_supply_str_after;
+  DROP TRIGGER t_summa_t_supply_str_before;
+  DROP PACKAGE pkg_around_mutation;
+  DROP PACKAGE test;*/
   
   CREATE TABLE t_supplier 
   (
