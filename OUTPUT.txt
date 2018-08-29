@@ -1,6 +1,4 @@
 SET SERVEROUTPUT ON 
-DECLARE
-v_result integer;
 BEGIN  
 test.testrun;      
 END;

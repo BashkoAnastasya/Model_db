@@ -216,6 +216,22 @@
   );
   
   
+  CREATE TABLE t_sale_rep
+  (
+  id_ware NUMBER NOT NULL,
+  month  DATE,
+  inp_qty NUMBER(6),
+  inp_sum NUMBER(8,2),
+  supple_qty  NUMBER(6),
+  supple_sum NUMBER(8,2),
+  sale_qty NUMBER(6),
+  sale_sum NUMBER(8,2),
+  out_qty NUMBER(6),
+  out_sum NUMBER(8,2),
+  CONSTRAINT fk_id_ware_sale_rep FOREIGN KEY (id_ware) REFERENCES t_ware(id_ware) 
+  );
+  
+  
   
 
   
