@@ -1,0 +1,37 @@
+Оптимизация запросов
+1) Сбор статистики по таблицам
+bms_stats.gather_table_stats(ownname=> '', tabname=> '');
+2) Получение предполагаемого плана :  F10
+3) Реальный план выполнения запроса  Select * from v$sql_plan where sql_id='SQL_ID'; 
+   Получение sql_id:
+      Select sql_id from v$sql  
+       where sql_fulltext like '%уникальный фрагмент текста запроса%';  
+4) Получения реального плана выполнения запроса с получением рекомендаций по его оптимизации
+DECLARE
+  my_task_name varchar2(30);
+  my_sqltext   clob;
+  rep_tuning   clob;
+BEGIN
+  Begin
+    DBMS_SQLTUNE.DROP_TUNING_TASK('my_sql_tuning_task');
+  exception
+    when others then
+      NULL;
+  end;
+  MY_SQLTEXT   := 'SELECT tw.id_ware, tw.name, tw.price, tm.name, tpm.id_price_model
+  FROM t_ware tw JOIN t_model tm ON tw.id_model = tm.id_model JOIN  t_price_model tpm ON tm.id_model = tpm.id_model
+ WHERE   tpm.price <> tw.price';
+  MY_TASK_NAME := DBMS_SQLTUNE.CREATE_TUNING_TASK(SQL_TEXT    => my_sqltext,
+                                                  TIME_LIMIT  => 60, --задается время выполнения в секундах
+                                                  TASK_NAME   => 'my_sql_tuning_task',
+                                                  DESCRIPTION => my_task_name,
+                                                  SCOPE       => DBMS_SQLTUNE.scope_comprehensive);
+  begin
+    DBMS_SQLTUNE.EXECUTE_TUNING_TASK('my_sql_tuning_task');
+  exception
+    when others then
+      null;
+  end;
+END;
+
+ SELECT DBMS_SQLTUNE.REPORT_TUNING_TASK('my_sql_tuning_task') FROM DUAL;
